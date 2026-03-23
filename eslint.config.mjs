@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local Excel helper scripts (not part of runtime code)
+    "inspect_excel.js",
+    "parse_excel.js",
+    "update_data.js",
   ]),
 ]);
 
