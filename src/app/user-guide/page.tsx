@@ -26,15 +26,15 @@ export default function UserGuide() {
         },
         {
             title: "3. Selecting the city:",
-            answer: "Currently, the assessment is limited to low-rise residential buildings in Bhubaneswar, Odisha, which falls under the Warm-Humid climate zone in India."
+            answer: "For selecting the city within the website, the current scope is confined to low-rise (Ground to Ground+2) residential buildings situated in India’s warm-humid climate zone. At present, the pilot version of the platform specifically focuses on Bhubaneswar as the case study location"
         },
         {
             title: "4. Selecting building envelope component:",
-            answer: "Select the specific parts of the building envelope you wish to retrofit. The app supports analysis for Windows, Walls, Roof, or all three combined."
+            answer: "Select the specific parts of the building envelope you wish to retrofit. The website supports analysis for Windows, Walls, Roof, or all three combined."
         },
         {
             title: "5. Selecting construction assembly options for Windows, Roof or Walls:",
-            answer: "Choose from standard construction materials to match your existing or proposed building design. Changes here significantly affect the energy and cost savings."
+            answer: "Choose from the list of construction solutions listed to match your existing or proposed building design"
         }
     ];
 
