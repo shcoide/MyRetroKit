@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useMemo, useEffect } from "react";
 import { calculateSavings, getCostColor, getEnergyColor, type EnvelopeType } from "@/lib/calculations";
-import { siteData } from "@/lib/data";
+import { siteData, performanceData } from "@/lib/data";
 
 function VisualizeContent() {
     const searchParams = useSearchParams();
@@ -16,7 +16,6 @@ function VisualizeContent() {
     const roofCode = searchParams.get("roofCode") || "";
     const wallCode = searchParams.get("wallCode") || "";
 
-    // If required params are missing, redirect to pick-your-retrofit
     const hasRequiredData = !!(code && storey && type);
 
     useEffect(() => {
@@ -33,34 +32,56 @@ function VisualizeContent() {
     const energyStyle = getEnergyColor(energyReduction, type);
     const costStyle = getCostColor(costReduction, type);
 
-    const { windowValue, roofValue, wallsValue, houseImageSrc } = useMemo(() => {
-        const frameLabel = siteData.windowFrames.find((f) => f.codePrefix === windowFrame)?.label;
-        const glazeLabel = siteData.windowGlazing.find((g) => g.codeSuffix === windowGlaze)?.label;
-        const windowValueLocal = frameLabel && glazeLabel ? `${frameLabel} frame with ${glazeLabel}` : "";
+    const houseImageSrc = useMemo(() => {
+        return storey === "G"
+            ? "/assets/G.jpg"
+            : storey === "G+1"
+                ? "/assets/G+1.jpg"
+                : "/assets/G+2.jpg";
+    }, [storey]);
 
-        const roofValueLocal = siteData.roofOptions.find((r) => r.code === roofCode)?.label || "";
-        const wallsValueLocal = siteData.wallOptions.find((w) => w.code === wallCode)?.label || "";
+    const windowAssemblyOptions = useMemo(() => {
+        const DELIM = "|||";
+        const options: Array<{ value: string; label: string; frame: string; glaze: string }> = [];
+        for (const f of siteData.windowFrames) {
+            for (const g of siteData.windowGlazing) {
+                const combinedCode = `${f.codePrefix}_${g.codeSuffix}`;
+                const isSupported = Object.keys(performanceData).some(key => key.includes(combinedCode));
+                if (isSupported) {
+                    options.push({
+                        value: `${f.codePrefix}${DELIM}${g.codeSuffix}`,
+                        label: `${f.label} frame with ${g.label}`,
+                        frame: f.codePrefix,
+                        glaze: g.codeSuffix,
+                    });
+                }
+            }
+        }
+        return options;
+    }, []);
 
-        const houseImage =
-            storey === "G"
-                ? "/assets/G.jpg"
-                : storey === "G+1"
-                    ? "/assets/G+1.jpg"
-                    : "/assets/G+2.jpg";
+    const supportedRoofOptions = useMemo(() => {
+        return siteData.roofOptions.filter(r => Object.keys(performanceData).some(key => key.includes(r.code)));
+    }, []);
 
-        return {
-            windowValue: windowValueLocal,
-            roofValue: roofValueLocal,
-            wallsValue: wallsValueLocal,
-            houseImageSrc: houseImage,
-        };
-    }, [roofCode, wallCode, storey, windowFrame, windowGlaze]);
+    const supportedWallOptions = useMemo(() => {
+        return siteData.wallOptions.filter(w => Object.keys(performanceData).some(key => key.includes(w.code)));
+    }, []);
+
+    const windowAssemblyValue = windowFrame && windowGlaze ? `${windowFrame}|||${windowGlaze}` : "";
 
     const showWindowsValue = type === "windows" || type === "combo";
     const showRoofValue = type === "roof" || type === "combo";
     const showWallsValue = type === "walls" || type === "combo";
 
-    // Show a loading/redirect state while checking
+    const updateParams = (updates: Record<string, string>) => {
+        const params = new URLSearchParams(searchParams.toString());
+        for (const [key, value] of Object.entries(updates)) {
+            params.set(key, value);
+        }
+        router.replace(`?${params.toString()}`, { scroll: false });
+    };
+
     if (!hasRequiredData) {
         return (
             <div className="flex-grow flex flex-col items-center justify-center w-full z-10 px-4">
@@ -74,34 +95,90 @@ function VisualizeContent() {
         );
     }
 
+    const inputStyle = { backgroundImage: "url('data:image/svg+xml;utf8,<svg fill=\"black\" height=\"28\" viewBox=\"0 0 24 24\" width=\"28\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>')", backgroundRepeat: "no-repeat", backgroundPositionX: "98%", backgroundPositionY: "center" };
+
     return (
         <div className="flex-grow flex flex-col pt-0 w-full z-10 px-4 md:px-0">
             <div className="max-w-6xl mx-auto w-full px-2 md:px-8 relative z-10">
                 <div className="bg-[#EFEEE9]/80 backdrop-blur-md px-4 md:px-10 border border-white/40 shadow-sm relative z-10 pb-12 pt-10 rounded-[2rem]">
-                    {/* Windows / Roof / Walls rows */}
                     <div className="space-y-4 max-w-4xl mx-auto">
-                        {(
-                            [
-                                { label: "Windows:", value: showWindowsValue ? windowValue : "" },
-                                { label: "Roof:", value: showRoofValue ? roofValue : "" },
-                                { label: "Walls:", value: showWallsValue ? wallsValue : "" },
-                            ] as const
-                        ).map((row) => (
-                            <div key={row.label} className="flex flex-col md:flex-row gap-4 items-center">
+                        
+                        {showWindowsValue && (
+                            <div className="flex flex-col md:flex-row gap-4 items-center">
                                 <div className="bg-white/95 rounded-full px-6 py-2.5 w-full md:w-[260px] font-black shadow-md text-[#5C3A21] text-lg border border-white/60 shrink-0 text-center md:text-left">
-                                    {row.label}
+                                    Windows:
                                 </div>
-                                <div className="flex-1 bg-[#FDFDFD] rounded-full px-6 py-2.5 border border-black/20 shadow-sm font-bold text-base md:text-lg w-full text-center text-black flex items-center justify-between">
-                                    <span className="truncate">{row.value ? row.value : "Baseline (No Retrofit)"}</span>
-                                    <span className="text-black ml-2">▼</span>
+                                <div className="flex-1 bg-[#FDFDFD] rounded-full px-4 border border-black/40 shadow-sm overflow-hidden flex items-center pr-4 w-full">
+                                    <select
+                                        className="flex-1 px-4 py-2 bg-transparent font-bold text-base md:text-lg outline-none w-full text-center appearance-none truncate"
+                                        style={inputStyle}
+                                        value={windowAssemblyValue}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (!val) return;
+                                            const [frame, glaze] = val.split("|||");
+                                            const newCode = type === "combo" ? `${frame}_${glaze}_${roofCode}_${wallCode}` : `${frame}_${glaze}`;
+                                            updateParams({ windowFrame: frame, windowGlaze: glaze, code: newCode });
+                                        }}
+                                    >
+                                        <option value="">Baseline (No Retrofit)</option>
+                                        {windowAssemblyOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                                    </select>
                                 </div>
                             </div>
-                        ))}
+                        )}
+
+                        {showRoofValue && (
+                            <div className="flex flex-col md:flex-row gap-4 items-center">
+                                <div className="bg-white/95 rounded-full px-6 py-2.5 w-full md:w-[260px] font-black shadow-md text-[#5C3A21] text-lg border border-white/60 shrink-0 text-center md:text-left">
+                                    Roof:
+                                </div>
+                                <div className="flex-1 bg-[#FDFDFD] rounded-full px-4 border border-black/40 shadow-sm overflow-hidden flex items-center pr-4 w-full">
+                                    <select
+                                        className="flex-1 px-4 py-2 bg-transparent font-bold text-base md:text-lg outline-none w-full text-center appearance-none truncate"
+                                        style={inputStyle}
+                                        value={roofCode}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (!val) return;
+                                            const newCode = type === "combo" ? `${windowFrame}_${windowGlaze}_${val}_${wallCode}` : val;
+                                            updateParams({ roofCode: val, code: newCode });
+                                        }}
+                                    >
+                                        <option value="">Baseline (No Retrofit)</option>
+                                        {supportedRoofOptions.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
+                        {showWallsValue && (
+                            <div className="flex flex-col md:flex-row gap-4 items-center">
+                                <div className="bg-white/95 rounded-full px-6 py-2.5 w-full md:w-[260px] font-black shadow-md text-[#5C3A21] text-lg border border-white/60 shrink-0 text-center md:text-left">
+                                    Walls:
+                                </div>
+                                <div className="flex-1 bg-[#FDFDFD] rounded-full px-4 border border-black/40 shadow-sm overflow-hidden flex items-center pr-4 w-full">
+                                    <select
+                                        className="flex-1 px-4 py-2 bg-transparent font-bold text-base md:text-lg outline-none w-full text-center appearance-none truncate"
+                                        style={inputStyle}
+                                        value={wallCode}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            if (!val) return;
+                                            const newCode = type === "combo" ? `${windowFrame}_${windowGlaze}_${roofCode}_${val}` : val;
+                                            updateParams({ wallCode: val, code: newCode });
+                                        }}
+                                    >
+                                        <option value="">Baseline (No Retrofit)</option>
+                                        {supportedWallOptions.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
                     </div>
 
-                    {/* Benefits + image */}
                     <div className="mt-12 max-w-5xl mx-auto relative">
-                        {/* ─── DESKTOP ONLY: SVG ARROWS OVERLAY ─── */}
                         {type !== "combo" && hasRequiredData && (
                             <div className="absolute inset-0 pointer-events-none hidden lg:flex items-center justify-center z-20">
                                 <svg viewBox="0 0 1000 500" className="w-full h-full">
@@ -111,16 +188,12 @@ function VisualizeContent() {
                                         </marker>
                                     </defs>
                                     <path
-                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660
-                                            } ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320
-                                            } C 600 200, 520 150, 480 150`}
+                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660} ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320} C 600 200, 520 150, 480 150`}
                                         fill="none" stroke="#18181A" strokeWidth="2.5"
                                         markerEnd="url(#arrowHead)"
                                     />
                                     <path
-                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660
-                                            } ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320
-                                            } C 600 300, 520 350, 480 350`}
+                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660} ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320} C 600 300, 520 350, 480 350`}
                                         fill="none" stroke="#18181A" strokeWidth="2.5"
                                         markerEnd="url(#arrowHead)"
                                     />
@@ -129,7 +202,6 @@ function VisualizeContent() {
                         )}
 
                         <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-center lg:items-center relative z-10">
-                            {/* Left Side: Result Pills */}
                             <div className="flex-1 space-y-6 w-full max-w-md lg:max-w-none">
                                 <div className="bg-white/95 px-6 pt-6 pb-8 rounded-[2rem] border border-white/60 shadow-md text-center relative">
                                     <div className="text-lg md:text-xl font-black text-[#5C3A21] tracking-wide mb-1">
@@ -170,7 +242,6 @@ function VisualizeContent() {
                                 </div>
                             </div>
 
-                            {/* Right Side: Image */}
                             <div className="flex-1 w-full max-w-md relative flex flex-col items-center">
                                 <div className="rounded-[2rem] border-[6px] border-white shadow-xl bg-white w-full overflow-hidden">
                                     <img
@@ -180,7 +251,6 @@ function VisualizeContent() {
                                     />
                                 </div>
 
-                                {/* Visual-only disclaimer */}
                                 <div className="mt-4 text-[11px] md:text-[12px] text-[#5C3A21]/80 leading-relaxed font-bold text-center">
                                     <span className="text-[#5C3A21] font-black">Disclaimer:</span> All images used in this description are AI generated... These visuals are intended solely for conceptual representation...
                                 </div>

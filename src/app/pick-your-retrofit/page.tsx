@@ -6,7 +6,7 @@ import { siteData, performanceData } from "@/lib/data";
 export default function PickYourRetrofit() {
     const router = useRouter();
     const [part, setPart] = useState(1);
-    const [formData, setFormData] = useState({ storey: "", envelope: "", roofCode: "", wallCode: "", windowFrame: "", windowGlaze: "" });
+    const [formData, setFormData] = useState({ storey: "", envelope: "", roofCode: "", wallCode: "", windowFrame: "", windowGlaze: "", areaValue: "", areaUnit: "" });
     const envelopeType = (() => {
         const v = formData.envelope;
         if (!v) return null;
@@ -60,7 +60,7 @@ export default function PickYourRetrofit() {
     // - On Part 2, once the needed dropdowns are selected, navigate to `/visualize`.
     useEffect(() => {
         if (part === 1) {
-            if (formData.storey && formData.envelope && envelopeType) {
+            if (formData.storey && formData.envelope && envelopeType && formData.areaValue && formData.areaUnit) {
                 setPart(2);
             }
             return;
@@ -159,8 +159,8 @@ export default function PickYourRetrofit() {
                             <div className="flex flex-col md:flex-row gap-4 items-center">
                                 <div className="bg-white/95 rounded-full px-8 py-2 md:py-3 w-full md:w-[320px] font-bold shadow-md text-[#5C3A21] text-base md:text-lg border border-white/60 shrink-0 text-center md:text-left">Built-up Area:</div>
                                 <div className="flex-1 flex flex-col sm:flex-row gap-3 w-full items-center">
-                                    <input type="number" placeholder="-- Enter numeric value --" className="flex-1 rounded-full px-6 py-2 md:py-3 border border-black/20 shadow-sm bg-[#FDFDFD] font-bold text-base md:text-lg outline-none text-center appearance-none placeholder-[#1A1A1A] w-full" />
-                                    <select className="flex-1 rounded-full px-8 py-2 md:py-3 border border-black/20 shadow-sm bg-[#FDFDFD] font-bold text-base md:text-lg outline-none text-center appearance-none w-full" style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>')", backgroundRepeat: "no-repeat", backgroundPositionX: "95%", backgroundPositionY: "center" }}>
+                                    <input type="number" placeholder="-- Enter numeric value --" className="flex-1 rounded-full px-6 py-2 md:py-3 border border-black/20 shadow-sm bg-[#FDFDFD] font-bold text-base md:text-lg outline-none text-center appearance-none placeholder-[#1A1A1A] w-full" value={formData.areaValue} onChange={e => setFormData({ ...formData, areaValue: e.target.value })} />
+                                    <select className="flex-1 rounded-full px-8 py-2 md:py-3 border border-black/20 shadow-sm bg-[#FDFDFD] font-bold text-base md:text-lg outline-none text-center appearance-none w-full" style={{ backgroundImage: "url('data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>')", backgroundRepeat: "no-repeat", backgroundPositionX: "95%", backgroundPositionY: "center" }} value={formData.areaUnit} onChange={e => setFormData({ ...formData, areaUnit: e.target.value })}>
                                         <option value="">-- Select unit --</option>
                                         {siteData.areaUnits.map((u, i) => <option key={i} value={u}>{u}</option>)}
                                     </select>
