@@ -43,10 +43,10 @@ function VisualizeContent() {
 
         const houseImage =
             storey === "G"
-                ? "/assets/G-floor reference AI image.jpg"
+                ? "/assets/G.jpg"
                 : storey === "G+1"
-                    ? "/assets/G+1 reference AI image.jpg"
-                    : "/assets/G+2 reference AI image.jpg";
+                    ? "/assets/G+1.jpg"
+                    : "/assets/G+2.jpg";
 
         return {
             windowValue: windowValueLocal,

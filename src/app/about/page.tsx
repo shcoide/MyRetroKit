@@ -11,8 +11,14 @@ export default function About() {
                                     *insert image<br />of<br />Shalini Keshri
                                 </span>
                             </div>
-                            <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-10 w-full border-[1.5px] border-black/20 shadow-sm min-h-[220px] flex items-center justify-center text-center">
-                                <span className="font-bold text-[#5C3A21] text-2xl lg:text-3xl">*Insert brief intro and description</span>
+                            <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-8 lg:p-10 w-full border-[1.5px] border-black/20 shadow-sm">
+                                <h2 className="font-bold text-[#5C3A21] text-xl lg:text-2xl mb-4 text-center">Shalini Keshri</h2>
+                                <p className="text-[#3B3B3B] text-sm md:text-base leading-relaxed text-justify">
+                                    I am a doctoral candidate in the Department of Architecture and Regional Planning at the Indian Institute of Technology Kharagpur (IIT Kharagpur), India. I hold a Bachelor&apos;s degree in Architecture (B. Arch) and a Master&apos;s degree in Urban and Regional Planning (M. Tech). I am a registered Architect with the Council of Architecture, an Associate Member of the Institute of Town Planners, India (AMITPI) and an IGBC Accredited Professional (IGBC AP).
+                                </p>
+                                <p className="text-[#3B3B3B] text-sm md:text-base leading-relaxed text-justify mt-4">
+                                    My academic journey and professional orientation have consistently centered on sustainability in the built environment, with a particular focus on climate-responsive and energy-efficient design. My current research focuses on energy-efficient retrofit strategies for low-rise residential buildings (G+3 and below) in the warm-humid climatic regions of India. I aim to develop a practical, user-friendly data-driven toolkit that supports homeowners, policy-makers, and industry stakeholders in selecting context-appropriate and cost-effective retrofit solutions. Ultimately, my work is oriented toward contributing to India&apos;s transition toward a net-zero future by advancing informed, inclusive, and scalable design approaches for the existing housing stock.
+                                </p>
                             </div>
                         </div>
 
@@ -23,10 +29,26 @@ export default function About() {
                                     *insert image<br />of<br />Dr. Priyanka Dey
                                 </span>
                             </div>
-                            <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-10 w-full border-[1.5px] border-black/20 shadow-sm min-h-[220px] flex items-center justify-center text-center">
-                                <span className="font-bold text-[#5C3A21] text-2xl lg:text-3xl">*Insert brief intro and description</span>
+                            <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-8 lg:p-10 w-full border-[1.5px] border-black/20 shadow-sm">
+                                <h2 className="font-bold text-[#5C3A21] text-xl lg:text-2xl mb-4 text-center">Dr. Priyanka Dey</h2>
+                                <p className="text-[#3B3B3B] text-sm md:text-base leading-relaxed text-justify">
+                                    Dr. Priyanka Dey is an Assistant Professor in the Department of Architecture and Regional Planning at the Indian Institute of Technology Kharagpur (IIT Kharagpur). With an academic foundation in Architecture (B. Arch) and a Master&apos;s degree in City Planning (MCP), followed by a PhD from IIT Kharagpur, she has developed a research profile grounded in the interdisciplinary relationships between people, place, and planning.
+                                </p>
+                                <p className="text-[#3B3B3B] text-sm md:text-base leading-relaxed text-justify mt-4">
+                                    Her research encompasses a broad spectrum of urban and social issues, including housing and community planning, slum redevelopment, and the socio-cultural and psychological consequences of development-induced displacement and resettlement. She is particularly interested in the intangible dimensions of relocation, such as place attachment, identity formation, and behavioural transitions across diverse population groups. Additionally, her work examines urban morphology and the socio-economic effects of infrastructural and commercial development, with an evolving focus on sustainable and energy-efficient urban development practices.
+                                </p>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Contact */}
+                    <div className="mt-12 text-center">
+                        <p className="text-[#5C3A21] font-bold text-base md:text-lg">
+                            Contact us at:{" "}
+                            <a href="mailto:myretrokit.in@gmail.com" className="underline hover:text-[#3D2C1A] transition-colors">
+                                myretrokit.in@gmail.com
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

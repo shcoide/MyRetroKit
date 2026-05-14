@@ -18,9 +18,9 @@ export default function UserGuide() {
             title: "2. Selecting the number of storeys in your house:",
             answer: "Please select between the options for your low-rise single-family residential building unit:",
             images: [
-                { src: "/assets/G-floor reference AI image.jpg", caption: "Ground-floor only" },
-                { src: "/assets/G+1 reference AI image.jpg", caption: "Ground +1 floor" },
-                { src: "/assets/G+2 reference AI image.jpg", caption: "Ground +2 floor" },
+                { src: "/assets/G.jpg", caption: "Ground-floor only" },
+                { src: "/assets/G1.jpg", caption: "Ground +1 floor" },
+                { src: "/assets/G2.jpg", caption: "Ground +2 floor" },
             ],
             disclaimer: "Disclaimer: All images used in this description are AI-generated using Canva's image generation tool. These visuals are intended solely for conceptual representation and illustrative purposes. They do not depict actual retrofit products, materials, or real-world outcomes."
         },
@@ -34,7 +34,7 @@ export default function UserGuide() {
         },
         {
             title: "5. Selecting construction assembly options for Windows, Roof or Walls:",
-            answer: "Choose from the list of construction solutions listed to match your existing or proposed building design"
+            answer: "Choose from the list of construction solutions listed to match your existing or proposed building design."
         }
     ];
 
