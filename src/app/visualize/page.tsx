@@ -179,27 +179,67 @@ function VisualizeContent() {
                     </div>
 
                     <div className="mt-12 max-w-5xl mx-auto relative">
-                        {type !== "combo" && hasRequiredData && (
-                            <div className="absolute inset-0 pointer-events-none hidden lg:flex items-center justify-center z-20">
-                                <svg viewBox="0 0 1000 500" className="w-full h-full">
-                                    <defs>
-                                        <marker id="arrowHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#18181A" />
-                                        </marker>
-                                    </defs>
-                                    <path
-                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660} ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320} C 600 200, 520 150, 480 150`}
-                                        fill="none" stroke="#18181A" strokeWidth="2.5"
-                                        markerEnd="url(#arrowHead)"
-                                    />
-                                    <path
-                                        d={`M ${type === 'roof' ? 700 : type === 'walls' ? 760 : 660} ${type === 'roof' ? 120 : type === 'walls' ? 240 : 320} C 600 300, 520 350, 480 350`}
-                                        fill="none" stroke="#18181A" strokeWidth="2.5"
-                                        markerEnd="url(#arrowHead)"
-                                    />
-                                </svg>
-                            </div>
-                        )}
+                        {type !== "combo" && hasRequiredData && (() => {
+                            // SVG viewBox: 0 0 1000 500
+                            // Layout: left flex-1 (cards) x:0-480, gap ~39 SVG units, right flex-1 (image) x:520-1000
+                            // Image (1472x832, AR=1.769) displayed at x:527-993, y:58-378 in SVG space
+                            // Energy card center: y≈118 | Cost card center: y≈382
+                            // Arrow startX/Y = building feature position mapped to SVG coords (per storey)
+                            // Arrow endX = 480 (right edge of left/card column)
+
+                            // Feature start coordinates per type+storey [startX, startY]
+                            const featureCoords: Record<string, Record<string, [number, number]>> = {
+                                roof: {
+                                    "G":   [760, 100],
+                                    "G+1": [762, 88],
+                                    "G+2": [762, 80],
+                                },
+                                walls: {
+                                    "G":   [880, 218],
+                                    "G+1": [870, 244],
+                                    "G+2": [815, 250],
+                                },
+                                windows: {
+                                    "G":   [820, 205],
+                                    "G+1": [778, 133],
+                                    "G+2": [752, 188],
+                                },
+                            };
+
+                            const [sx, sy] = featureCoords[type]?.[storey] ?? [760, 200];
+
+                            // Control points for smooth cubic bezier curves to each card
+                            // Arrow 1 → Energy card (top), endpoint (480, 118)
+                            const cp1x = sx - 100, cp1y = Math.min(sy, 118) - 20;
+                            const cp2x = 510,      cp2y = 118;
+                            // Arrow 2 → Cost card (bottom), endpoint (480, 382)
+                            const cp3x = sx - 100, cp3y = Math.max(sy, 382) + 20;
+                            const cp4x = 510,      cp4y = 382;
+
+                            return (
+                                <div className="absolute inset-0 pointer-events-none hidden lg:flex items-center justify-center z-20">
+                                    <svg viewBox="0 0 1000 500" className="w-full h-full">
+                                        <defs>
+                                            <marker id="arrowHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#18181A" />
+                                            </marker>
+                                        </defs>
+                                        {/* Arrow to Energy Demand card (top card) */}
+                                        <path
+                                            d={`M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, 480 118`}
+                                            fill="none" stroke="#18181A" strokeWidth="2.5"
+                                            markerEnd="url(#arrowHead)"
+                                        />
+                                        {/* Arrow to Cost Savings card (bottom card) */}
+                                        <path
+                                            d={`M ${sx} ${sy} C ${cp3x} ${cp3y}, ${cp4x} ${cp4y}, 480 382`}
+                                            fill="none" stroke="#18181A" strokeWidth="2.5"
+                                            markerEnd="url(#arrowHead)"
+                                        />
+                                    </svg>
+                                </div>
+                            );
+                        })()}
 
                         <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-center lg:items-center relative z-10">
                             <div className="flex-1 space-y-6 w-full max-w-md lg:max-w-none">
