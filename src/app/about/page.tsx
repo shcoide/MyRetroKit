@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function About() {
     return (
         <div className="flex-grow flex flex-col pt-0 w-full z-10">
@@ -6,10 +8,13 @@ export default function About() {
                     <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mt-4 max-w-6xl mx-auto">
                         {/* Shalini Keshri */}
                         <div className="flex-1 bg-[#F5F5F3]/60 rounded-[3rem] p-8 lg:p-12 border border-white/80 shadow-md flex flex-col items-center gap-10">
-                            <div className="w-full max-w-[280px] aspect-[3/4] border-[1px] border-black/80 flex items-center justify-center text-center text-[#1A1A1A] font-medium bg-[#FAFAFA] shadow-sm">
-                                <span className="text-lg leading-relaxed">
-                                    *insert image<br />of<br />Shalini Keshri
-                                </span>
+                            <div className="w-full max-w-[280px] aspect-[3/4] border-[1px] border-black/80 flex items-center justify-center bg-[#FAFAFA] shadow-sm overflow-hidden relative">
+                                <Image
+                                    src="/assets/Shalini.jpg"
+                                    alt="Shalini Keshri"
+                                    fill
+                                    className="object-cover"
+                                />
                             </div>
                             <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-8 lg:p-10 w-full border-[1.5px] border-black/20 shadow-sm">
                                 <h2 className="font-bold text-[#5C3A21] text-xl lg:text-2xl mb-4 text-center">Shalini Keshri</h2>
@@ -24,10 +29,13 @@ export default function About() {
 
                         {/* Dr. Priyanka Dey */}
                         <div className="flex-1 bg-[#F5F5F3]/60 rounded-[3rem] p-8 lg:p-12 border border-white/80 shadow-md flex flex-col items-center gap-10">
-                            <div className="w-full max-w-[280px] aspect-[3/4] border-[1px] border-black/80 flex items-center justify-center text-center text-[#1A1A1A] font-medium bg-[#FAFAFA] shadow-sm">
-                                <span className="text-lg leading-relaxed">
-                                    *insert image<br />of<br />Dr. Priyanka Dey
-                                </span>
+                            <div className="w-full max-w-[280px] aspect-[3/4] border-[1px] border-black/80 flex items-center justify-center bg-[#FAFAFA] shadow-sm overflow-hidden relative">
+                                <Image
+                                    src="/assets/Priyanka.jpg"
+                                    alt="Dr. Priyanka Dey"
+                                    fill
+                                    className="object-cover"
+                                />
                             </div>
                             <div className="bg-[#FAFAFA]/90 rounded-[2.5rem] p-8 lg:p-10 w-full border-[1.5px] border-black/20 shadow-sm">
                                 <h2 className="font-bold text-[#5C3A21] text-xl lg:text-2xl mb-4 text-center">Dr. Priyanka Dey</h2>
