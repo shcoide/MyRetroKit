@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
     return (
         <div className="w-full bg-white/95 backdrop-blur-sm px-8 py-6 border-t border-gray-200/50 shadow-sm">
@@ -27,8 +29,17 @@ export default function Footer() {
                 
                 {/* Added mt-4 for mobile spacing, keeps it at the bottom right on desktop */}
                 <div className="mt-4 md:mt-0 md:pb-1">
-                    <div className="pl-6 pr-4 py-1.5 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 text-black font-black text-sm shadow-sm font-fredoka">
-                        MyRetroKit.in
+                    <div className="flex flex-col items-center md:items-end gap-2">
+                        <Image
+                            src="/assets/Logo.jpg"
+                            alt="MyRetroKit Logo"
+                            width={128}
+                            height={128}
+                            className="w-24 md:w-32 h-auto object-contain"
+                        />
+                        <div className="pl-6 pr-4 py-1.5 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 text-black font-black text-sm shadow-sm font-fredoka">
+                            MyRetroKit.in
+                        </div>
                     </div>
                 </div>
             </div>
