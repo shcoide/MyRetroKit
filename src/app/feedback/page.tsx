@@ -31,7 +31,7 @@ export default function Feedback() {
 
                             <div className="text-center pt-6 md:pt-10 mt-6 md:mt-10 space-y-4">
                                 <a href="https://forms.gle/YrFnAsPM4YN8XaK67" target="_blank" rel="noreferrer" className="text-[#5B42D9] font-black hover:underline inline-block text-[17px] md:text-2xl break-all px-2">
-                                    https://forms.gle/bVQRi7hdLL86Mu5T8
+                                    https://docs.google.com/forms/d/e/1FAIpQLSdUEvTif7dSjNYqHUWqgZHapLc7GQrIgjshlVuFcu59JeqJjw/viewform?usp=sharing&ouid=104719618011702385644
                                 </a>
                                 <p className="font-black text-lg md:text-[26px] text-[#5C3A21] leading-tight px-2">
                                     Thank you for supporting this academic endeavor.
