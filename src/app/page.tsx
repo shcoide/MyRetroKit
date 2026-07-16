@@ -86,13 +86,27 @@ export default function Home() {
           <div className="bg-[#FAFAFA]/95 rounded-full px-8 py-3.5 text-[#1A1A1A] font-bold text-base md:text-xl shadow-sm text-center flex-1 border border-black/10">
             Save more. Live better. Build greener.
           </div>
-          <button
-            onClick={() => router.push("/user-guide")}
-            className="w-full md:w-auto bg-[#593E26] text-white px-10 py-3.5 text-lg md:text-xl font-bold hover:bg-[#3D2C1A] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 group relative overflow-hidden"
-          >
-            <span className="relative z-10">See how it works!</span>
-            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-          </button>
+          <div className="relative w-full md:w-auto">
+            <button
+              onClick={() => router.push("/user-guide")}
+              className="w-full md:w-auto bg-[#593E26] text-white px-10 py-3.5 text-lg md:text-xl font-bold hover:bg-[#3D2C1A] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 group relative overflow-hidden"
+            >
+              <span className="relative z-10">See how it works!</span>
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+            </button>
+            <svg
+              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 md:mt-3 w-8 h-8 md:w-10 md:h-10 text-red-600 animate-bounce pointer-events-none select-none"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="12" y1="20" x2="12" y2="5" />
+              <polyline points="5 12 12 5 19 12" />
+            </svg>
+          </div>
         </div>
       </div>
 
